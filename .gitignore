@@ -37,3 +37,6 @@
 *.tlog
 *.lastbuildstate
 *.sdf
+*.opensdf
+GLConvexHull.sdf
+GLConvexHull.sdf

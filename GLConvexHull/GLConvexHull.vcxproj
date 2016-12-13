@@ -39,8 +39,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>E:\VS Projects\GLConvexHull\GLAux\include;$(IncludePath)</IncludePath>
-    <LibraryPath>E:\VS Projects\GLConvexHull\GLAux\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)l\GLAux\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\GLAux\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>E:\VS Projects\GLConvexHull\GLAux\include;$(IncludePath)</IncludePath>
@@ -51,7 +51,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>E:\VS Projects\GLConvexHull\GLAux\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\GLAux\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
