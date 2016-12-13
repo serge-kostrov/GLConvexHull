@@ -31,6 +31,8 @@
 # Others
 *.ilk
 *.pdb
+*.idb
+*.suo
 *.log
 *.tlog
 *.lastbuildstate
