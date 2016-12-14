@@ -26,7 +26,7 @@ private:
 	mat4 m_mtxProj;
 	mat4 m_mtxTransToCm;
 	mat4 m_mtxTransFromCm;
-	//const vec3 m_cm = vec3{ 0, 0.12, 1.1 };
-	const vec3 m_cm = vec3{ 0, 0, 0 };
+	const vec3 m_cm = vec3{ 0, 0.12, 1.1 };
+	//const vec3 m_cm = vec3{ 0, 0, 0 };
 };
 

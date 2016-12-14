@@ -36,17 +36,11 @@ CGLManager* CGLManager::instance()
 		aPt[3] = { 0.0f, 0.0f, 1.5f };
 		const int nNm = 4;
 		array<glfloat3, nNm> aNm;
-		for (int i = 0; i < nNm; ++i)
-		{
-			const float3& pt0 = aPt[i];
-			const float3& pt1 = aPt[(i + 1)%nPt];
-			const float3& pt2 = aPt[(i + 2)%nPt];
-			const float3& pt = aPt[(i + 3)%nPt];
-
-			aNm[i] = ((pt1 - pt0) % (pt2 - pt0)).normalized();
-
-			//if (distPtPln(pt, pt0, aNm[i]))
-		}
+		
+		aNm[0] = ((aPt[1] - aPt[0]) % (aPt[2] - aPt[0])).normalized();
+		aNm[1] = ((aPt[3] - aPt[0]) % (aPt[1] - aPt[0])).normalized();
+		aNm[2] = ((aPt[2] - aPt[0]) % (aPt[3] - aPt[0])).normalized();
+		aNm[3] = ((aPt[1] - aPt[2]) % (aPt[3] - aPt[2])).normalized();
 
 		aVxAttr.push_back(make_tuple(glfloat3{ 0.0, 0.5, 1.0 }, CGLColor::gray, aNm[0]));
 		aVxAttr.push_back(make_tuple(glfloat3{ 0.5, -0.5, 1.0 }, CGLColor::gray, aNm[1]));
@@ -76,6 +70,9 @@ CGLManager* CGLManager::instance()
 			for (auto j : get<2>(vx))
 				aVx.push_back(j);
 		}
+
+		m_instance->m_lightPos = glfloat3{ 0.0f, 0.0f, 0.9f };
+		m_instance->m_lightCol = CGLColor{ 1.0f, 1.0f, 1.0f, 1.0f };
 	}
 
 	return m_instance;
@@ -163,7 +160,7 @@ bool CGLManager::initializeShaderProgram()
 	glLinkProgram(m_shaderProgram);
 	glUseProgram(m_shaderProgram);
 
-	const GLsizei stride = (glfloat3::dim + CGLColor::dim)*sizeof(GLfloat);
+	const GLsizei stride = (glfloat3::dim + CGLColor::dim + glfloat3::dim)*sizeof(GLfloat);
 	GLint inPos = glGetAttribLocation(m_shaderProgram, "in_Position");
 	glEnableVertexAttribArray(inPos);
 	glVertexAttribPointer(inPos, glfloat3::dim, GL_FLOAT, GL_FALSE, stride, 0);
@@ -172,6 +169,12 @@ bool CGLManager::initializeShaderProgram()
 	glEnableVertexAttribArray(inCol);
 	glVertexAttribPointer(inCol, CGLColor::dim, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<GLvoid*>(glfloat3::dim*sizeof(GLfloat)));	
 
+	GLint inNm = glGetAttribLocation(m_shaderProgram, "in_Normal");
+	glEnableVertexAttribArray(inNm);
+	glVertexAttribPointer(inNm, glfloat3::dim, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<GLvoid*>((glfloat3::dim + CGLColor::dim)*sizeof(GLfloat)));
+
+	m_unLightPos = glGetUniformLocation(m_shaderProgram, "un_LightPosition");
+	m_unLightCol = glGetUniformLocation(m_shaderProgram, "un_LightColor");
 	m_unMVP = glGetUniformLocation(m_shaderProgram, "un_MVP");
 
 	return true;
@@ -218,6 +221,8 @@ void CGLManager::releaseShaderProgram()
 
 void CGLManager::drawScene()
 {
+	glUniform3fv(m_unLightPos, 1, m_lightPos.begin());
+	glUniform4fv(m_unLightCol, 1, m_lightCol.begin());
 	glUniformMatrix4fv(m_unMVP, 1, GL_FALSE, &m_MVP.mvp()[0][0]);
 	glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);
 	glDrawElements(GL_LINES, 12, GL_UNSIGNED_INT, reinterpret_cast<GLvoid*>(12*sizeof(GLuint)));

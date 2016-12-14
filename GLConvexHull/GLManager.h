@@ -1,6 +1,7 @@
 #pragma once
 #include "EventManager.h"
 #include "ModelViewProjection.h"
+#include "GLColor.h"
 
 
 class CGLManager
@@ -42,11 +43,15 @@ private:
 	GLuint m_vxShader;
 	GLuint m_fgShader;
 	GLint m_unMVP;
+	GLint m_unLightPos;
+	GLint m_unLightCol;
 	CModelViewProjection m_MVP;
 	GLFWwindow* m_window;
 	int2 m_winSize;
 	std::vector<GLfloat> m_aVx;
 	std::vector<GLuint> m_aInd;
 	std::vector<GLuint> m_aIndEd;
+	glfloat3 m_lightPos;
+	CGLColor m_lightCol;
 };
 
