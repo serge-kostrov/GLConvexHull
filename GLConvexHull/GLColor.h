@@ -28,6 +28,9 @@ public:
 	GLclampf* end() { return &m_r + dim; }
 	const GLclampf* end() const { return &m_r + dim; }
 
+	GLclampf& operator[](int index);
+	GLclampf operator[](int index) const;
+
 	CGLColor operator=(const CGLColor& other);
 
 public:

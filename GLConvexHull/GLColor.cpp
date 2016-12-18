@@ -1,12 +1,24 @@
 #include "GLColor.h"
 
 
-const CGLColor CGLColor::white = { 1.f, 1.f, 1.f, 1.f };
-const CGLColor CGLColor::gray = { 0.5f, 0.5f, 0.5f, 1.0f };
-const CGLColor CGLColor::black = { 0.f, 0.f, 0.f, 1.f };
-const CGLColor CGLColor::red = { 1.f, 0.f, 0.f, 1.f };
-const CGLColor CGLColor::green = { 0.f, 1.f, 0.f, 1.f };
-const CGLColor CGLColor::blue = { 0.f, 0.f, 1.f, 1.f };
+const CGLColor CGLColor::white = { 1, 1, 1, 1 };
+const CGLColor CGLColor::gray = { 0.5, 0.5, 0.5, 1 };
+const CGLColor CGLColor::black = { 0, 0, 0, 1 };
+const CGLColor CGLColor::red = { 1, 0, 0, 1 };
+const CGLColor CGLColor::green = { 0, 1, 0, 1 };
+const CGLColor CGLColor::blue = { 0, 0, 1, 1 };
+
+GLclampf& CGLColor::operator[](int index)
+{
+	assert(0 <= index && index < dim);
+	return *(&m_r + index);
+}
+
+GLclampf CGLColor::operator[](int index) const
+{
+	assert(0 <= index && index < dim);
+	return *(&m_r + index);
+}
 
 CGLColor CGLColor::operator=(const CGLColor& other)
 {

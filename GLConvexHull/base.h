@@ -54,6 +54,9 @@ public:
     T normalize();
     T2 normalized() const;
 
+	// Instance methods
+	void negate();
+
     // Input and output
     friend std::ostream& operator<<(std::ostream& os, const T2& val)
     {
@@ -193,6 +196,13 @@ T2<T> T2<T>::normalized() const
     return result;
 }
 
+template<class T>
+void T2<T>::negate()
+{
+	m_x = -m_x;
+	m_y = -m_y;
+}
+
 using double2 = T2<double>;
 
 template<>
@@ -263,6 +273,9 @@ public:
     T norm2() const;
     T normalize();
     T3 normalized() const;
+
+	// Instance methods
+	void negate();
 
     // Input and output
     friend std::ostream& operator<<(std::ostream& os, const T3& val)
@@ -453,6 +466,14 @@ T3<T> T3<T>::normalized() const
         i /= n;
 
     return result;
+}
+
+template<class T>
+void T3<T>::negate()
+{
+	m_x = -m_x;
+	m_y = -m_y;
+	m_z = -m_z;
 }
 
 #pragma endregion

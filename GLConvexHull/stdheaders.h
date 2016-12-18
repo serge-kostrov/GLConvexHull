@@ -32,3 +32,7 @@
 #include <queue>
 #include <algorithm>
 #include <iterator>
+
+
+using std::vector;
+using std::list;
