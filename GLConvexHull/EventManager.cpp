@@ -41,7 +41,7 @@ void CEventManager::callbackError(int error, const char* description)
 void CEventManager::callbackMouseScroll(GLFWwindow* window, double offsetX, double offsetY)
 {
 	const double scale = offsetY/m_maxScrollOffset;
-	CGLManager::instance()->scaleVx(scale);
+	CGLManager::instance()->scale(scale);
 }
 
 void CEventManager::callbackMousePosition(GLFWwindow* window, double posX, double posY)
@@ -49,9 +49,9 @@ void CEventManager::callbackMousePosition(GLFWwindow* window, double posX, doubl
 	double2& posOld = m_instance->m_posMouse;
 	const double2 shift = { posX - posOld.x(), posY - posOld.y() };
 	if (m_instance->m_isMouseLeftButtonPressed)
-		CGLManager::instance()->rotateVx(shift);
+		CGLManager::instance()->rotate(shift);
 	else if (m_instance->m_isMouseRightButtonPressed)
-		CGLManager::instance()->moveVx(shift);
+		CGLManager::instance()->move(shift);
 	posOld = { posX, posY };
 }
 

@@ -6,17 +6,17 @@ class CVertex;
 class CEdge;
 class CFace;
 
-using ItVertex = std::list<CVertex>::iterator;
-using ItEdge = std::list<CEdge>::iterator;
-using ItFace = std::list<CFace>::iterator;
+using ItVertex = list<CVertex>::iterator;
+using ItEdge = list<CEdge>::iterator;
+using ItFace = list<CFace>::iterator;
 
 class CVertex
 {
 public:
-    CVertex(const ItEdge& ed) : m_pos{0., 0., 0.}, m_ed{ed} {}
-    CVertex(double x, double y, double z, const ItEdge& ed) : m_pos{x, y, z}, m_ed{ed} {}
-    CVertex(const double3& pos, const ItEdge& ed) : m_pos{pos}, m_ed{ed} {}
-    CVertex(const CVertex& other) : m_pos{other.m_pos}, m_ed{other.m_ed} {}
+    CVertex(const ItEdge& ed) : m_pos(0., 0., 0.), m_ed(ed) {}
+    CVertex(double x, double y, double z, const ItEdge& ed) : m_pos(x, y, z), m_ed(ed) {}
+    CVertex(const double3& pos, const ItEdge& ed) : m_pos(pos), m_ed(ed) {}
+    CVertex(const CVertex& other) : m_pos(other.m_pos), m_ed(other.m_ed) {}
     ~CVertex() {}
 
     // Access
@@ -76,20 +76,25 @@ private:
 class CFace
 {
 public:
-    CFace(const ItEdge& ed) : m_nm{ 0., 0., 0. }, m_ed{ ed }, m_bVisited{ false } {}
-    CFace(const CFace& other) : m_nm{ other.m_nm }, m_ed{ other.m_ed }, m_aVx{ other.m_aVx }, m_bVisited{ other.m_bVisited } {}
+    CFace(const ItEdge& ed) : m_nm(0., 0., 0.), m_ed(ed), m_bVisited(false) {}
+    CFace(const CFace& other) : m_nm(other.m_nm), m_ed(other.m_ed), m_aVx(other.m_aVx), m_bVisited(other.m_bVisited) {}
     ~CFace() {}
 
     // Assignment operators
-    void operator=(const CFace& other) { m_nm = other.m_nm; m_ed = other.m_ed; m_aVx = other.m_aVx; }
+    void operator=(const CFace& other)
+    {
+        m_nm = other.m_nm;
+        m_ed = other.m_ed;
+        m_aVx = other.m_aVx;
+    }
 
     // Access
     const double3& nm() const { return m_nm; }
     double3& nm() { return m_nm; }
     const ItEdge& ed() const { return m_ed; }
     ItEdge& ed() { return m_ed; }
-    const std::list<double3>& aVx() const { return m_aVx; }
-    std::list<double3>& aVx() { return m_aVx; }
+    const list<double3>& aVx() const { return m_aVx; }
+    list<double3>& aVx() { return m_aVx; }
     bool bVisited() const { return m_bVisited; }
     bool& bVisited() { return m_bVisited; }
 
@@ -101,7 +106,7 @@ private:
     double3 m_nm;               // face normal;
     //double3 m_cm;               // center of mass
     ItEdge m_ed;                // incident edge
-    std::list<double3> m_aVx;	// conflict list
+    list<double3> m_aVx;	    // conflict list
     bool m_bVisited;            // flag showing whether this face was visited in the DFS process
 };
 
@@ -114,14 +119,14 @@ public:
     void clear() { m_aVx.clear(); m_aEd.clear(); m_aFc.clear(); }
 
     // Access
-    const std::list<CVertex>& aVx() const { return m_aVx; }
-    std::list<CVertex>& aVx() { return m_aVx; }
+    const list<CVertex>& aVx() const { return m_aVx; }
+    list<CVertex>& aVx() { return m_aVx; }
 
-    const std::list<CEdge>& aEd() const { return m_aEd; }
-    std::list<CEdge>& aEd() { return m_aEd; }
+    const list<CEdge>& aEd() const { return m_aEd; }
+    list<CEdge>& aEd() { return m_aEd; }
 
-    const std::list<CFace>& aFc() const { return m_aFc; }
-    std::list<CFace>& aFc() { return m_aFc; }
+    const list<CFace>& aFc() const { return m_aFc; }
+    list<CFace>& aFc() { return m_aFc; }
 
     double scale() const;
 
@@ -141,7 +146,7 @@ public:
     ItFace addFc(const CFace& fc);
     void eraseFc(const ItFace& fc);
 
-    void addVxFan(const double3& pt, const std::list<ItEdge>& aRidge, const std::list<ItFace>& aVisible);
+    void addVxFan(const double3& pt, const list<ItEdge>& aRidge, const list<ItFace>& aVisible);
 
     // "Null" iterators
     ItVertex nullVx() { return m_aVx.end(); }
@@ -150,10 +155,10 @@ public:
 
 private:
     CMesh(const CMesh& other);
-    void operator=(const CMesh& other);
+    void operator=(const CMesh& other) {}
 
 private:
-    std::list<CVertex> m_aVx;
-    std::list<CEdge> m_aEd;
-    std::list<CFace> m_aFc;
+    list<CVertex> m_aVx;
+    list<CEdge> m_aEd;
+    list<CFace> m_aFc;
 };

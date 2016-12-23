@@ -34,5 +34,7 @@
 #include <iterator>
 
 
+using std::string;
 using std::vector;
 using std::list;
+using std::unique_ptr;
