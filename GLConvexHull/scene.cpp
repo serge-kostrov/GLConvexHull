@@ -101,69 +101,30 @@ void CSceneMesh::update()
     {
         using namespace std;
 
+		m_mesh.clearEdVisit();
+
         m_aEdVBO.clear();
         m_aEdVBO.reserve(nVx*(double3::dim + CGLColor::dim));
         m_aEdEBO.clear();
         m_aEdEBO.reserve(2*nEd);
 
-        set<ItEdge> aEdVisited;
-        GLint iVx = 0;
         for(auto& ed = aEd.begin(); ed != aEd.end(); ++ed)
         {
-            if(aEdVisited.find(ed) == aEdVisited.end() && aEdVisited.find(ed->twin()) == aEdVisited.end())
+			if (!ed->visited() && !ed->twin()->visited())
             {
-                array<double3, 2> edEnds;
-                edEnds.front() = ed->vx()->pos();
-                edEnds.back() = ed->next()->vx()->pos();
+                array<ItVertex, 2> edEnds;
+                edEnds.front() = ed->vx();
+                edEnds.back() = ed->next()->vx();
 
                 for(const auto& vx : edEnds)
                 {
-                    for(const auto& i : vx)
+                    for(const auto& i : vx->pos())
                         m_aEdVBO.push_back(static_cast<GLfloat>(i));
                     for(const auto& i : m_edCol)
                         m_aEdVBO.push_back(i);
-                    m_aEdEBO.push_back(iVx);
-                    ++iVx;
+                    m_aEdEBO.push_back(static_cast<GLint>(vx->id()));
                 }
-                aEdVisited.insert(ed);
-            }
-        }
-
-        unordered_map<ItVertex, GLint> aVxVisited;
-        GLint iVx = 0;
-        for(auto& ed = aEd.begin(); ed != aEd.end(); ++ed)
-        {
-            const ItVertex& vx = ed->vx();
-            const ItVertex& vxNb = ed->twin()->vx();
-            const auto& vxIndex = aVxVisited.find(vx);
-            const auto& vxNbIndex = aVxVisited.find(vxNb);
-
-            if(aVxVisited.find(vx) == aVxVisited.end())
-            {
-                for(auto i : vx->pos())
-                    m_aEdVBO.push_back(static_cast<GLfloat>(i));
-                for(auto i : m_edCol)
-                    m_aEdVBO.push_back(i);
-
-                m_aEdEBO.push_back(iVx);
-                if(vxNbIndex != aVxVisited.end())
-                    m_aEdEBO.push_back(vxNbIndex->second);
-
-                ++iVx;
-            }
-
-            if(aVxVisited.find(vxNb) == aVxVisited.end())
-            {
-                for(auto i : vx->pos())
-                    m_aEdVBO.push_back(static_cast<GLfloat>(i));
-                for(auto i : m_edCol)
-                    m_aEdVBO.push_back(i);
-
-                m_aEdEBO.push_back(iVx);
-                if(vxIndex != aVxVisited.end())
-                    m_aEdEBO.push_back(vxNbIndex->second);
-
-                ++iVx;
+				ed->visited() = true;
             }
         }
     }

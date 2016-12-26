@@ -258,3 +258,21 @@ void CMesh::addVxFan(const double3& pt, const std::list<ItEdge>& aRidge, const s
         eraseFc(fc);
     }
 }
+
+void CMesh::clearVxVisit()
+{
+	for (auto& vx : m_aVx)
+		vx.visited() = false;
+}
+
+void CMesh::clearEdVisit()
+{
+	for (auto& ed : m_aEd)
+		ed.visited() = false;
+}
+
+void CMesh::clearFcVisit()
+{
+	for (auto& fc : m_aFc)
+		fc.visited() = false;
+}

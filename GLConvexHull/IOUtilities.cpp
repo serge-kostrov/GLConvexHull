@@ -3,14 +3,14 @@
 namespace io_util
 {;
 
-vector<string>&& split(const string& str)
+vector<string> split(const string& str)
 {
     using namespace std;
     vector<string> tokens;
     istringstream iss(str);
     copy(istream_iterator<string>(iss), istream_iterator<string>(), back_inserter(tokens));
 
-    return move(tokens);
+    return tokens;
 }
 
 bool readAllLines(string& content, const char* fileName)
@@ -22,7 +22,7 @@ bool readAllLines(string& content, const char* fileName)
 		return false;
 	string line = "";
 	while (getline(ifs, line))
-		content += line;
+		content += line + "\n";
 	ifs.close();
 
 	return true;

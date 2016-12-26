@@ -1,5 +1,7 @@
 #pragma once
 #include "base.h"
+#include "stdheaders.h"
+#include "idnumber.h"
 
 
 class CVertex;
@@ -13,10 +15,10 @@ using ItFace = list<CFace>::iterator;
 class CVertex
 {
 public:
-    CVertex(const ItEdge& ed) : m_pos(0., 0., 0.), m_ed(ed) {}
-    CVertex(double x, double y, double z, const ItEdge& ed) : m_pos(x, y, z), m_ed(ed) {}
-    CVertex(const double3& pos, const ItEdge& ed) : m_pos(pos), m_ed(ed) {}
-    CVertex(const CVertex& other) : m_pos(other.m_pos), m_ed(other.m_ed) {}
+    CVertex(const ItEdge& ed) : m_pos(0., 0., 0.), m_ed(ed), m_id(CIdVxManager::instance()->next()) {}
+	CVertex(double x, double y, double z, const ItEdge& ed) : m_pos(x, y, z), m_ed(ed), m_id(CIdVxManager::instance()->next()) {}
+	CVertex(const double3& pos, const ItEdge& ed) : m_pos(pos), m_ed(ed), m_id(CIdVxManager::instance()->next()) {}
+	CVertex(const CVertex& other) : m_pos(other.m_pos), m_ed(other.m_ed), m_id(other.m_id) {}
     ~CVertex() {}
 
     // Access
@@ -34,6 +36,9 @@ public:
 	double y() const { return m_pos.y(); }
 	double& z() { return m_pos.z(); }
 	double z() const { return m_pos.z(); }
+	bool visited() const { return m_bVisited; }
+	bool& visited() { return m_bVisited; }
+	const SIdVx& id() const { return m_id; }
 
     // Assignment operators
     void operator=(const CVertex& other) { m_ed = other.m_ed; m_pos = other.m_pos; }
@@ -41,6 +46,8 @@ public:
 private:
     ItEdge m_ed;        // outgoing edge
     double3 m_pos;      // vertex coordinates
+	bool m_bVisited;
+	SIdVx m_id;
 };
 
 class CEdge
@@ -64,6 +71,8 @@ public:
     ItEdge& next() { return m_edNext; }
     const ItFace& face() const { return m_fc; }
     ItFace& face() { return m_fc; }
+	bool visited() const { return m_bVisited; }
+	bool& visited() { return m_bVisited; }
 
 private:
     ItVertex m_vx;			// tail vertex
@@ -71,6 +80,7 @@ private:
     ItEdge m_edPrev;		// previous edge
     ItEdge m_edNext;		// next edge
     ItFace m_fc;			// incident face
+	bool m_bVisited;
 };
 
 class CFace
@@ -95,8 +105,8 @@ public:
     ItEdge& ed() { return m_ed; }
     const list<double3>& aVx() const { return m_aVx; }
     list<double3>& aVx() { return m_aVx; }
-    bool bVisited() const { return m_bVisited; }
-    bool& bVisited() { return m_bVisited; }
+    bool visited() const { return m_bVisited; }
+    bool& visited() { return m_bVisited; }
 
     // Geometry tools
     bool isIntersectedBy(const double3& orgRay, const double3& dirRay) const;
@@ -152,6 +162,11 @@ public:
     ItVertex nullVx() { return m_aVx.end(); }
     ItEdge nullEd() { return m_aEd.end(); }
     ItFace nullFc() { return m_aFc.end(); }
+
+	// Visit flags
+	void clearVxVisit();
+	void clearEdVisit();
+	void clearFcVisit();
 
 private:
     CMesh(const CMesh& other);

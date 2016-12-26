@@ -83,6 +83,7 @@
     <ClCompile Include="GLColor.cpp" />
     <ClCompile Include="GLManager.cpp" />
     <ClCompile Include="halfedge.cpp" />
+    <ClCompile Include="idnumber.cpp" />
     <ClCompile Include="IOUtilities.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ModelViewProjection.cpp" />
@@ -97,6 +98,7 @@
     <ClInclude Include="GLColor.h" />
     <ClInclude Include="GLManager.h" />
     <ClInclude Include="halfedge.h" />
+    <ClInclude Include="idnumber.h" />
     <ClInclude Include="IOUtilities.h" />
     <ClInclude Include="ModelViewProjection.h" />
     <ClInclude Include="qquickhull.h" />

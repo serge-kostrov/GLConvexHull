@@ -267,9 +267,9 @@ void CQuickHull::getHorizon(std::list<ItEdge>& aRidge, std::list<ItFace>& aVisib
     {
         const ItFace fc = st.top();
         st.pop();
-        if (!fc->bVisited())
+        if (!fc->visited())
         {
-            fc->bVisited() = true;
+            fc->visited() = true;
             if (checkVisible(ptEye, fc))
                 aVisible.push_back(fc);
 
@@ -277,7 +277,7 @@ void CQuickHull::getHorizon(std::list<ItEdge>& aRidge, std::list<ItFace>& aVisib
             do
             {
                 const ItFace& fcNb = ed->twin()->face();
-                if (!fcNb->bVisited())
+                if (!fcNb->visited())
                 {
                     if (!checkVisible(ptEye, fcNb))
                         aRidgeTmp.push_back(ed);

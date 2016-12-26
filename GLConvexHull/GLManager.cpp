@@ -21,7 +21,8 @@ CGLManager* CGLManager::instance()
 		m_instance->m_lightCol = CGLColor::white;
 
         vector<double3> aPt;
-        io_util::readXYZFile(aPt, "aPt.txt");
+		if (!io_util::readXYZFile(aPt, "E:\\VS Projects\\GitHub\\GLConvexHull\\aPt.txt"))
+			cout << "Failed to read the file!" << endl;
         CQuickHull hull(aPt);
         if(!hull.algo(m_instance->m_mesh))
             cout << "Failed to calculate a hull!" << endl;
@@ -173,8 +174,8 @@ bool CGLManager::handleInput()
 
 void CGLManager::paintGL()
 {
-	glPointSize(m_ptSize);
-	glLineWidth(m_lineWidth);
+	//glPointSize(m_ptSize);
+	//glLineWidth(m_lineWidth);
 	glClearColor(CGLColor::white.r(), CGLColor::white.g(), CGLColor::white.b(), CGLColor::white.a());
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	drawScene();

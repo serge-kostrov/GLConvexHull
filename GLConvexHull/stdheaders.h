@@ -32,6 +32,7 @@
 #include <queue>
 #include <algorithm>
 #include <iterator>
+#include <functional>
 
 
 using std::string;

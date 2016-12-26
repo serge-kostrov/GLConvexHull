@@ -2,8 +2,8 @@
 #include "EventManager.h"
 #include "ModelViewProjection.h"
 #include "GLColor.h"
+#include "scene.h"
 
-class ISceneObject;
 
 class CGLManager
 {
